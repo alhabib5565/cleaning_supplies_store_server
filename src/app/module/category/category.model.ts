@@ -7,5 +7,3 @@ const category_schema = new Schema<TCategory>({
 })
 
 export const Category_model = model<TCategory>('Category', category_schema)
-
-
