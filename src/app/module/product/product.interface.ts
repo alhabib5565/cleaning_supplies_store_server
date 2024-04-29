@@ -8,14 +8,17 @@ export type TProduct = {
     description: string;
     price: number;
     discount_percentage?: number
-    rating: number;
-    available_quantity: number;
+    stock: number;
     thumbnail: string;
     images: string[];
     flash_sale?: TFlashSale
     weight?: string;
     features?: string[];
+    rating: number;
+    status: TStatus
 }
+
+export type TStatus = 'Published' | 'Upcoming'
 
 export type TFlashSale = {
     sale_start: string;
