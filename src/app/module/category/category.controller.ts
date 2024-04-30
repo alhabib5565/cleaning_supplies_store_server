@@ -1,27 +1,48 @@
 import { Request, Response } from "express"
 import { category_services } from "./category.service"
+import { sendResponse } from "../../utils/sendResponse"
+import httpStatus from "http-status"
+import { catchAsync } from "../../utils/catchAsync"
 
 
-const create_category = async (req: Request, res: Response) => {
-    try {
-        const category = req.body
-        const result = await category_services.create_category_into_DB(category)
+const create_category = catchAsync(async (req: Request, res: Response) => {
+    const category = req.body
+    const result = await category_services.create_category_into_DB(category)
 
-        res.status(200).json({
-            success: true,
-            message: 'category create succesfull',
-            data: result
-        })
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'category create failed',
-            error
-        })
-    }
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        message: 'category create succesfull',
+        data: result
+    })
+})
 
-}
+
+const get_all_categories = catchAsync(async (req: Request, res: Response) => {
+    const result = await category_services.get_all_category_from_DB()
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'categories retrived succesfull',
+        data: result
+    })
+})
+
+const get_single_category = catchAsync(async (req: Request, res: Response) => {
+    const id = req.params.id
+    const result = await category_services.get_single_category_from_DB(id)
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'category retrived succesfull',
+        data: result
+    })
+})
+
 
 export const category_controller = {
-    create_category
+    create_category,
+    get_all_categories,
+    get_single_category
 }
