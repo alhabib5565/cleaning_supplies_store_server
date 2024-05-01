@@ -1,9 +1,13 @@
 import express from 'express';
 import { product_controller } from './product.controller';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { ProductValidations } from './product.validation';
 
 const router = express.Router()
 
-router.post('/create-product', product_controller.create_product)
+router.post('/create-product',
+    // validateRequest(ProductValidations.createProductValidationSchema),
+    product_controller.create_product)
 
 
 export const product_router = router
