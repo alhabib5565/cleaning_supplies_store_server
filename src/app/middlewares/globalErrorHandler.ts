@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+import { ErrorRequestHandler } from 'express';
 import { ZodError } from 'zod';
 import { handleZodError } from '../error/handleZodError';
 import { TErrorResponse } from '../interface/error';
-import mongoose from 'mongoose';
 import { handleValidationError } from '../error/validationError';
 import { handleCastError } from '../error/handleCastError';
 import { handleDuplicateError } from '../error/handleDuplicateError';

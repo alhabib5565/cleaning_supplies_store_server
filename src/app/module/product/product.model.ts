@@ -1,4 +1,4 @@
-import { Schema, Types, model } from "mongoose";
+import { Schema, model } from "mongoose";
 import { TFlashSale, TProduct } from "./product.interface";
 import { Category_model } from "../category/category.model";
 import { Brand_model } from "../brand/brand.model";
@@ -11,11 +11,10 @@ const flash_sale_schema = new Schema<TFlashSale>({
 const product_schema = new Schema<TProduct>({
     title: { type: String, required: true },
     category: {
-        type: Types.ObjectId, required: true,
-        ref: 'Category'
+        type: String, required: true,
     },
     brand: {
-        type: Types.ObjectId, required: true, ref: 'Brand'
+        type: String, required: true
     },
     type: { type: String, required: true },
     description: { type: String, required: true, },
@@ -37,10 +36,10 @@ const product_schema = new Schema<TProduct>({
     timestamps: true,
 })
 
-product_schema.pre('save', async function () {
+product_schema.pre('save', async function (next) {
 
-    const isCategoryExists = await Category_model.findOne({ _id: this.category })
-    const isBrandExists = await Brand_model.findOne({ _id: this.brand })
+    const isCategoryExists = await Category_model.findOne({ category_name: this.category })
+    const isBrandExists = await Brand_model.findOne({ brand_name: this.brand })
 
     if (!isBrandExists) {
         throw new Error("Brand does not exist");
@@ -48,7 +47,7 @@ product_schema.pre('save', async function () {
     if (!isCategoryExists) {
         throw new Error("Category does not exist");
     }
-
+    next()
 })
 
 
