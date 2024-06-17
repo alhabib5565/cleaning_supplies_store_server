@@ -1,4 +1,9 @@
 export type TCategory = {
-    category_image?: string,
-    category_name: string
+    _id: string
+    mainCategoryName: string// ref  
+    categoryName: string
+    imageURL: string,
+    metaTitle: string
+    metaDescription: string
+    isDeleted: boolean
 }

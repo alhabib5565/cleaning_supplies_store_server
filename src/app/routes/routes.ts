@@ -3,6 +3,7 @@ import { category_router } from '../module/category/category.route';
 import { product_router } from '../module/product/product.route';
 import { brand_router } from '../module/brand/brand.route';
 import { mainCategoryRouter } from '../module/mainCategory/mainCategory.route';
+import { subCategoryRouter } from '../module/subCategory/subCategory.route';
 const router = express.Router()
 
 const appRoutes = [
@@ -13,6 +14,10 @@ const appRoutes = [
     {
         path: '/categories',
         routes: category_router
+    },
+    {
+        path: '/sub-categories',
+        routes: subCategoryRouter
     },
     {
         path: '/products',

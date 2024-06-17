@@ -3,7 +3,7 @@ import { TMainCategory } from "./mainCategory.interface";
 
 
 const mainCategorySchema = new Schema<TMainCategory>({
-    _id: { type: String, unique: true, required: true },
+    _id: { type: String, required: true },
     mainCategoryName: { type: String, required: true, unique: true },
     imageURL: { type: String, required: true },
     metaTitle: { type: String },

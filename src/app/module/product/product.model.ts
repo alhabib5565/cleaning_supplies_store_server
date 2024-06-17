@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { TFlashSale, TProduct } from "./product.interface";
-import { Category_model } from "../category/category.model";
+import { Category } from "../category/category.model";
 import { Brand_model } from "../brand/brand.model";
 
 const flash_sale_schema = new Schema<TFlashSale>({
@@ -38,7 +38,7 @@ const product_schema = new Schema<TProduct>({
 
 product_schema.pre('save', async function (next) {
 
-    const isCategoryExists = await Category_model.findOne({ category_name: this.category })
+    const isCategoryExists = await Category.findOne({ category_name: this.category })
     const isBrandExists = await Brand_model.findOne({ brand_name: this.brand })
 
     if (!isBrandExists) {
