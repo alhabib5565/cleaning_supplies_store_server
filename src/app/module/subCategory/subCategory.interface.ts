@@ -3,8 +3,8 @@ import { TStatus } from "../../interface/golobal"
 export type TSubCategory = {
     _id: string
     subCategoryId: string
-    mainCategoryName: string, //ref
-    categoryName: string// ref
+    mainCategory: string, //ref
+    category: string// ref
     subCategoryName: string
     imageURL: string,
     metaTitle: string

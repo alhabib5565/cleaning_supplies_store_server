@@ -1,13 +1,13 @@
 import { SubCategory } from "./subCategory.model"
 
-export const generateMainCategoryId = async () => {
+export const generatSubCategoryId = async () => {
     let currentId = '0'
 
-    const lastMainCategoryId = await SubCategory.findOne({}, { mainCategoryId: 1 }).sort({
+    const lastSubCategoryId = await SubCategory.findOne({}, { subCategoryId: 1 }).sort({
         createdAt: -1,
     })
-    if (lastMainCategoryId) {
-        currentId = lastMainCategoryId.subCategoryId.substring(3)
+    if (lastSubCategoryId) {
+        currentId = lastSubCategoryId.subCategoryId.substring(3)
     }
     return (Number(currentId) + 1).toString().padStart(4, '0')
 }

@@ -5,7 +5,7 @@ import { STATUS } from "../../constant/constant";
 const category_schema = new Schema<TCategory>({
     _id: { type: String, required: true },
     categoryId: { type: String, required: true, unique: true },
-    mainCategoryName: { type: String, required: true, ref: 'MainCategory' },
+    mainCategory: { type: String, required: true, ref: 'MainCategory' },
     categoryName: { type: String, required: true, unique: true },
     imageURL: { type: String, required: true },
     metaTitle: { type: String },
