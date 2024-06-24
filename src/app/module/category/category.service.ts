@@ -4,6 +4,7 @@ import { MainCategory } from "../mainCategory/mainCategory.model";
 import { TCategory } from "./category.interface";
 import { Category } from "./category.model";
 import { generateCategoryId } from "./utils";
+import { QueryBuilder } from "../../builder/QueryBuilder";
 
 const create_category_into_DB = async (payload: TCategory) => {
     const mainCategory = await MainCategory.findById(payload.mainCategory)
@@ -16,10 +17,21 @@ const create_category_into_DB = async (payload: TCategory) => {
     return result
 }
 
-const get_all_category_from_DB = async () => {
-    const result = await Category.find().populate('mainCategory')
+const get_all_category_from_DB = async (query: Record<string, unknown>) => {
+    const searchAbleFields = ['mainCategory', 'categoryName', 'metaTitle', 'metaDescription']
+
+    const modelQuery = new QueryBuilder(query, Category.find().populate('mainCategory'))
+        .search(searchAbleFields)
+        .filter()
+        .sort()
+        .paginate()
+        .fields()
+
+    const result = await modelQuery.modelQuery
     return result
 }
+
+
 const get_single_category_from_DB = async (id: string) => {
     const result = await Category.findById(id).populate('mainCategory')
     return result

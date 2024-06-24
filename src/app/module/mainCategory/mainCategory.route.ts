@@ -17,6 +17,10 @@ router.get(
     MainCategoryController.getAllMainCategories
 )
 router.get(
+    '/dropdown',
+    MainCategoryController.getCategoriesForDropdown
+)
+router.get(
     '/:id',
     MainCategoryController.getSingleMainCategory
 )

@@ -18,12 +18,22 @@ const createMainCategory = catchAsync(async (req: Request, res: Response) => {
 
 
 const getAllMainCategories = catchAsync(async (req: Request, res: Response) => {
-    const result = await MainCategoryService.getAllMainCategoryFromDB()
+    const result = await MainCategoryService.getAllMainCategoryFromDB(req.query)
 
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
         message: 'Main categories retrived succesfull',
+        data: result
+    })
+})
+
+const getCategoriesForDropdown = catchAsync(async (req: Request, res: Response) => {
+    const result = await MainCategoryService.getCategoriesForDropdown()
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'Retrived categories for dropdown succesfull',
         data: result
     })
 })
@@ -44,5 +54,6 @@ const getSingleMainCategory = catchAsync(async (req: Request, res: Response) => 
 export const MainCategoryController = {
     createMainCategory,
     getAllMainCategories,
+    getCategoriesForDropdown,
     getSingleMainCategory
 }
