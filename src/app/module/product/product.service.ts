@@ -1,9 +1,30 @@
+import httpStatus from "http-status";
 import { QueryBuilder } from "../../builder/QueryBuilder";
+import { MainCategory } from "../mainCategory/mainCategory.model";
 import { Product_model } from "../product/product.model";
 import { TProduct } from "./product.interface";
+import AppError from "../../error/AppError";
+import { Category } from "../category/category.model";
+import { SubCategory } from "../subCategory/subCategory.model";
 
-const create_product_into_DB = async (product: TProduct) => {
-    const result = await Product_model.create(product)
+const create_product_into_DB = async (payload: TProduct) => {
+    const mainCategory = await MainCategory.findById(payload.mainCategory)
+    if (!mainCategory) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Main category does not exist')
+    }
+
+    const category = await Category.findById(payload.category)
+    if (!category) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Category does not exist')
+    }
+
+    const subCategory = await SubCategory.findById(payload.subCategory)
+    if (!subCategory) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Category does not exist')
+    }
+    payload.availableQuantity = payload.totalQuantity
+
+    const result = await Product_model.create(payload)
     return result
 }
 

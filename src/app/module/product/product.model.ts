@@ -1,54 +1,63 @@
 import { Schema, model } from "mongoose";
-import { TFlashSale, TProduct } from "./product.interface";
-import { Category } from "../category/category.model";
-import { Brand_model } from "../brand/brand.model";
+import { TFlashSale, TProduct, TVariants } from "./product.interface";
+import { PRODUCT_STATUS } from "./product.constant";
 
-const flash_sale_schema = new Schema<TFlashSale>({
+const flashSaleSchema = new Schema<TFlashSale>({
     sale_end: { type: String, required: true },
     sale_start: { type: String, required: true },
+}, {
+    _id: false
+})
+
+const variantsSchema = new Schema<TVariants>({
+    color: { type: [Schema.Types.ObjectId] }
+}, {
+    _id: false
 })
 
 const product_schema = new Schema<TProduct>({
-    title: { type: String, required: true },
-    category: {
-        type: String, required: true,
-    },
-    brand: {
-        type: String, required: true
-    },
-    type: { type: String, required: true },
+    productName: { type: String, required: true },
+    mainCategory: { type: String, required: true, ref: 'MainCategory' },
+    category: { type: String, required: true, ref: 'Category' },
+    subCategory: { type: String, required: true, ref: 'SubCategory' },
     description: { type: String, required: true, },
-    price: { type: Number, min: 1 },
-    stock: { type: Number, required: true, min: 1 },
-    thumbnail: { type: String },
-    discount_percentage: { type: Number, default: 0 },
+    price: { type: Number, min: 1, required: true },
+    totalQuantity: { type: Number, required: true, min: 1 },
+    availableQuantity: { type: Number, required: true, min: 1 },
+    thumbnail: { type: String, required: true },
+    brand: { type: String },
+    type: { type: String },
+    discount_percentage: { type: Number },
     images: { type: [String] },
-    flash_sale: { type: flash_sale_schema, required: false, },
+    variants: { type: variantsSchema },
+    flash_sale: { type: flashSaleSchema, required: false, },
     weight: { type: String },
     features: { type: [String] },
     rating: { type: Number, default: 0 },
     status: {
         type: String,
-        enum: ['Upcoming', 'Published'],
+        enum: Object.keys(PRODUCT_STATUS),
         default: 'Published'
-    }
+    },
+    metaTitle: { type: String },
+    metaDescription: { type: String },
 }, {
     timestamps: true,
 })
 
-product_schema.pre('save', async function (next) {
+// product_schema.pre('save', async function (next) {
 
-    const isCategoryExists = await Category.findOne({ category_name: this.category })
-    const isBrandExists = await Brand_model.findOne({ brand_name: this.brand })
+//     const isCategoryExists = await Category.findOne({ category_name: this.category })
+//     const isBrandExists = await Brand_model.findOne({ brand_name: this.brand })
 
-    if (!isBrandExists) {
-        throw new Error("Brand does not exist");
-    }
-    if (!isCategoryExists) {
-        throw new Error("Category does not exist");
-    }
-    next()
-})
+//     if (!isBrandExists) {
+//         throw new Error("Brand does not exist");
+//     }
+//     if (!isCategoryExists) {
+//         throw new Error("Category does not exist");
+//     }
+//     next()
+// })
 
 
 

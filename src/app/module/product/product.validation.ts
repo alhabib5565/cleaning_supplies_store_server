@@ -1,33 +1,46 @@
 import { z } from "zod";
 
+const flashSaleSchema = z.object({
+    sale_end: z.string({ required_error: "Sale end date is required" }),
+    sale_start: z.string({ required_error: "Sale start date is required" }),
+});
+
+const variantsSchema = z.object({
+    color: z.array(z.string()),
+});
+
+const PRODUCT_STATUS = {
+    Published: "Published",
+    Unpublished: "Unpublished",
+    Draft: "Draft",
+};
 
 const createProductValidationSchema = z.object({
-    title: z.string({ required_error: 'Title is required' }).trim(),
-    category: z.string({
-        required_error: "Category is required",
-    }),
-    type: z.string({
-        required_error: "Type is required"
-    }),
-    brand: z.string({
-        required_error: "Brand is required"
-    }),
-    description: z.string({ required_error: "Description is required" }).trim(),
-    price: z.number({
-        invalid_type_error: "Must be a number",
-        required_error: 'Price is required'
-    }).min(1, { message: "Price must be at least 1" }),
-    stock: z.number({
-        invalid_type_error: "Must be a number",
-        required_error: 'Stock is required'
-    }).min(1, { message: "Product stock  must be at least 1", }),
-    status: z.enum(['Upcoming', 'Published']).optional(),
-    thumbnail: z.string().optional(),
+    productName: z.string({ required_error: "Product name is required" }),
+    mainCategory: z.string({ required_error: "Main category is required" }),
+    category: z.string({ required_error: "Category is required" }),
+    subCategory: z.string({ required_error: "Sub-category is required" }),
+    description: z.string({ required_error: "Description is required" }),
+    price: z.number().min(1, { message: "Price must be at least 1" }),
+    totalQuantity: z.number().min(1, { message: "Total quantity must be at least 1" }),
+    // availableQuantity: z.number().min(1, { message: "Available quantity must be at least 1" }).
+    thumbnail: z.string({ required_error: "Thumbnail URL is required" }),
     discount_percentage: z.number().optional(),
     images: z.array(z.string()).optional(),
+    brand: z.string().optional(),
+    type: z.string().optional(),
+    variants: variantsSchema.optional(),
+    flash_sale: flashSaleSchema.optional(),
     weight: z.string().optional(),
     features: z.array(z.string()).optional(),
+    rating: z.number().default(0).optional(),
+    status: z.enum(Object.keys(PRODUCT_STATUS) as [keyof typeof PRODUCT_STATUS], {
+        required_error: "Status is required",
+    }).default('Published'),
+}, {
+    required_error: "Product data is required"
 });
+
 
 export const ProductValidations = {
     createProductValidationSchema
