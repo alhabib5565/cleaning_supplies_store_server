@@ -23,22 +23,22 @@ const createProductValidationSchema = z.object({
     description: z.string({ required_error: "Description is required" }),
     price: z.number().min(1, { message: "Price must be at least 1" }),
     totalQuantity: z.number().min(1, { message: "Total quantity must be at least 1" }),
-    // availableQuantity: z.number().min(1, { message: "Available quantity must be at least 1" }).
     thumbnail: z.string({ required_error: "Thumbnail URL is required" }),
-    discount_percentage: z.number().optional(),
+    discountPercentage: z.number().optional(),
     images: z.array(z.string()).optional(),
     brand: z.string().optional(),
     type: z.string().optional(),
     variants: variantsSchema.optional(),
     flash_sale: flashSaleSchema.optional(),
-    weight: z.string().optional(),
+    weight: z.object({
+        value: z.number(),
+        unit: z.string()
+    }).optional(),
     features: z.array(z.string()).optional(),
     rating: z.number().default(0).optional(),
     status: z.enum(Object.keys(PRODUCT_STATUS) as [keyof typeof PRODUCT_STATUS], {
         required_error: "Status is required",
     }).default('Published'),
-}, {
-    required_error: "Product data is required"
 });
 
 

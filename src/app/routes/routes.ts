@@ -5,6 +5,7 @@ import { brand_router } from '../module/brand/brand.route';
 import { mainCategoryRouter } from '../module/mainCategory/mainCategory.route';
 import { subCategoryRouter } from '../module/subCategory/subCategory.route';
 import { colorRouter } from '../module/color/color.routes';
+import { authRouter } from '../module/auth/auth.route';
 const router = express.Router()
 
 const appRoutes = [
@@ -31,6 +32,10 @@ const appRoutes = [
     {
         path: '/brands',
         routes: brand_router
+    },
+    {
+        path: '/auth',
+        routes: authRouter
     },
 ]
 

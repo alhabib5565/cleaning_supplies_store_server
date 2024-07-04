@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { TFlashSale, TProduct, TVariants } from "./product.interface";
+import { TColor, TFlashSale, TProduct, TVariants, TWeight } from "./product.interface";
 import { PRODUCT_STATUS } from "./product.constant";
 
 const flashSaleSchema = new Schema<TFlashSale>({
@@ -8,11 +8,21 @@ const flashSaleSchema = new Schema<TFlashSale>({
 }, {
     _id: false
 })
-
+const colorSchema = new Schema<TColor>({
+    _id: Schema.Types.ObjectId,
+    hexCode: String,
+    label: String
+})
+// { _id: "6679b28ea6bd15736e6c2d30", label: "Blue", hexCode: "#0000FF" }
 const variantsSchema = new Schema<TVariants>({
-    color: { type: [Schema.Types.ObjectId] }
+    color: { type: [colorSchema] }
 }, {
     _id: false
+})
+
+const weightSchema = new Schema<TWeight>({
+    value: { type: Number, required: true },
+    unit: { type: String, required: true }
 })
 
 const product_schema = new Schema<TProduct>({
@@ -27,13 +37,14 @@ const product_schema = new Schema<TProduct>({
     thumbnail: { type: String, required: true },
     brand: { type: String },
     type: { type: String },
-    discount_percentage: { type: Number },
+    discountPercentage: { type: Number },
     images: { type: [String] },
     variants: { type: variantsSchema },
     flash_sale: { type: flashSaleSchema, required: false, },
-    weight: { type: String },
+    weight: { type: weightSchema, required: false },
     features: { type: [String] },
     rating: { type: Number, default: 0 },
+    ratingCount: { type: Number, default: 0 },
     status: {
         type: String,
         enum: Object.keys(PRODUCT_STATUS),
