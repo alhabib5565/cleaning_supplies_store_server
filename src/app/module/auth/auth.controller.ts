@@ -16,16 +16,42 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 })
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
-    const result = await UserService.loginUser(req.body)
-
+    const { accessToken, refreshToken } = await UserService.loginUser(req.body)
+    res.cookie('refreshToken', refreshToken, {
+        httpOnly: true
+    })
     sendResponse(res, {
         statusCode: httpStatus.OK,
         message: 'User Loggin succesfull',
+        data: accessToken
+    })
+})
+
+const changePassword = catchAsync(async (req: Request, res: Response) => {
+    const result = await UserService.changePassword(req.user, req.body)
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        message: 'Password change succesfull',
         data: result
     })
 })
 
+const requestPasswordReset = catchAsync(async (req: Request, res: Response) => {
+    const result = await UserService.requestPasswordReset(req.body.email)
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        message: 'Send password reset link',
+        data: result
+    })
+
+    return null
+})
+
 export const AuthController = {
     createUser,
-    loginUser
+    loginUser,
+    changePassword,
+    requestPasswordReset
 }

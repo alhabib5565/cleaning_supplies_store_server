@@ -1,11 +1,18 @@
 import { USER_ROLE, USER_STATUS } from "./user.constant"
 
+export type TPasswordHistory = {
+    password: string,
+    changed_at: Date
+}
+
 export type TUser = {
     userId: string
     name: string,
     email: string
     role: TUserRole
     password: string
+    passwordHistory: TPasswordHistory[]
+    passwordChangeAt: Date
     status: TUserStatus
     isDeleted: boolean,
 }
