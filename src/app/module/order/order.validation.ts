@@ -30,6 +30,6 @@ const createOrderValidationSchema = z.object({
     paymentInfo: PaymentInfoSchema
 })
 
-export const OrderSchema = {
+export const OrderValidations = {
     createOrderValidationSchema
 }

@@ -11,7 +11,7 @@ const createColor = catchAsync(async (req: Request, res: Response) => {
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
-        message: 'Color create succesfull',
+        message: 'Color create successful',
         data: result
     })
 })
@@ -23,7 +23,7 @@ const getAllColors = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
-        message: 'Colors retrived succesfull',
+        message: 'Colors retrived successful',
         data: result
     })
 })
@@ -35,7 +35,7 @@ const getSingleColor = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
-        message: 'Color retrived succesfull',
+        message: 'Color retrived successful',
         data: result
     })
 })

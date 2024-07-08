@@ -11,7 +11,7 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
-        message: 'Registration succesfull',
+        message: 'Registration successful',
         data: result
     })
 })
@@ -23,7 +23,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     })
     sendResponse(res, {
         statusCode: httpStatus.OK,
-        message: 'User Loggin succesfull',
+        message: 'User Loggin successful',
         data: accessToken
     })
 })
@@ -33,7 +33,7 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
-        message: 'Password change succesfull',
+        message: 'Password change successful',
         data: result
     })
 })

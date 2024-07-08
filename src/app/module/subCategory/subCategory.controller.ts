@@ -11,7 +11,7 @@ const createSubCategory = catchAsync(async (req: Request, res: Response) => {
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
-        message: 'Sub category create succesfull',
+        message: 'Sub category create successful',
         data: result
     })
 })
@@ -23,7 +23,7 @@ const getAllSubCategories = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
-        message: 'Sub categories retrived succesfull',
+        message: 'Sub categories retrived successful',
         data: result
     })
 })
@@ -35,7 +35,7 @@ const getSingleSubCategory = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
-        message: 'Sub category retrived succesfull',
+        message: 'Sub category retrived successful',
         data: result
     })
 })

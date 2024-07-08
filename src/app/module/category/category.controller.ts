@@ -11,7 +11,7 @@ const create_category = catchAsync(async (req: Request, res: Response) => {
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
-        message: 'category create succesfull',
+        message: 'category create successful',
         data: result
     })
 })
@@ -23,7 +23,7 @@ const get_all_categories = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
-        message: 'categories retrived succesfull',
+        message: 'categories retrived successful',
         data: result
     })
 })
@@ -35,7 +35,7 @@ const get_single_category = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
-        message: 'category retrived succesfull',
+        message: 'category retrived successful',
         data: result
     })
 })

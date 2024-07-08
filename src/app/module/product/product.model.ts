@@ -1,36 +1,50 @@
-import { Schema, model } from "mongoose";
-import { TColor, TFlashSale, TProduct, TVariants, TWeight } from "./product.interface";
-import { PRODUCT_STATUS } from "./product.constant";
+import { Schema, model } from 'mongoose';
+import {
+  TColor,
+  TFlashSale,
+  TProduct,
+  TVariants,
+  TWeight,
+} from './product.interface';
+import { PRODUCT_STATUS } from './product.constant';
 
-const flashSaleSchema = new Schema<TFlashSale>({
+const flashSaleSchema = new Schema<TFlashSale>(
+  {
     sale_end: { type: String, required: true },
     sale_start: { type: String, required: true },
-}, {
-    _id: false
-})
+  },
+  {
+    _id: false,
+  },
+);
 const colorSchema = new Schema<TColor>({
-    _id: Schema.Types.ObjectId,
-    hexCode: String,
-    label: String
-})
+  _id: Schema.Types.ObjectId,
+  hexCode: String,
+  label: String,
+});
 // { _id: "6679b28ea6bd15736e6c2d30", label: "Blue", hexCode: "#0000FF" }
-const variantsSchema = new Schema<TVariants>({
-    color: { type: [colorSchema] }
-}, {
-    _id: false
-})
+const variantsSchema = new Schema<TVariants>(
+  {
+    color: { type: [colorSchema] },
+  },
+  {
+    _id: false,
+  },
+);
 
 const weightSchema = new Schema<TWeight>({
-    value: { type: Number, required: true },
-    unit: { type: String, required: true }
-})
+  value: { type: Number, required: true },
+  unit: { type: String, required: true },
+});
 
-const product_schema = new Schema<TProduct>({
+const product_schema = new Schema<TProduct>(
+  {
+    productId: { type: String, required: true, unique: true },
     productName: { type: String, required: true },
     mainCategory: { type: String, required: true, ref: 'MainCategory' },
     category: { type: String, required: true, ref: 'Category' },
     subCategory: { type: String, required: true, ref: 'SubCategory' },
-    description: { type: String, required: true, },
+    description: { type: String, required: true },
     price: { type: Number, min: 1, required: true },
     totalQuantity: { type: Number, required: true, min: 1 },
     availableQuantity: { type: Number, required: true, min: 1 },
@@ -40,21 +54,23 @@ const product_schema = new Schema<TProduct>({
     discountPercentage: { type: Number },
     images: { type: [String] },
     variants: { type: variantsSchema },
-    flash_sale: { type: flashSaleSchema, required: false, },
+    flash_sale: { type: flashSaleSchema, required: false },
     weight: { type: weightSchema, required: false },
     features: { type: [String] },
     rating: { type: Number, default: 0 },
     ratingCount: { type: Number, default: 0 },
     status: {
-        type: String,
-        enum: Object.keys(PRODUCT_STATUS),
-        default: 'Published'
+      type: String,
+      enum: Object.keys(PRODUCT_STATUS),
+      default: 'Published',
     },
     metaTitle: { type: String },
     metaDescription: { type: String },
-}, {
+  },
+  {
     timestamps: true,
-})
+  },
+);
 
 // product_schema.pre('save', async function (next) {
 
@@ -70,6 +86,4 @@ const product_schema = new Schema<TProduct>({
 //     next()
 // })
 
-
-
-export const Product_model = model<TProduct>('Products', product_schema)
+export const Product_model = model<TProduct>('Products', product_schema);

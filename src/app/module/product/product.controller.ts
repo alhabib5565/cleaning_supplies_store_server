@@ -10,7 +10,7 @@ const create_product = catchAsync(async (req: Request, res: Response) => {
 
     res.status(200).json({
         success: true,
-        message: 'product create succesfull',
+        message: 'product create successful',
         data: result
     })
 })
@@ -21,7 +21,7 @@ const get_all_products = catchAsync(async (req: Request, res: Response) => {
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: 'products retrived succesfull',
+        message: 'products retrived successful',
         data: result
     })
 })
@@ -31,7 +31,7 @@ const get_single_product = catchAsync(async (req: Request, res: Response) => {
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: 'Single product retrived succesfull',
+        message: 'Single product retrived successful',
         data: result
     })
 })

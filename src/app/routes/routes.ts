@@ -6,6 +6,7 @@ import { mainCategoryRouter } from '../module/mainCategory/mainCategory.route';
 import { subCategoryRouter } from '../module/subCategory/subCategory.route';
 import { colorRouter } from '../module/color/color.routes';
 import { authRouter } from '../module/auth/auth.route';
+import { orderRouter } from '../module/order/order.route';
 const router = express.Router()
 
 const appRoutes = [
@@ -36,6 +37,10 @@ const appRoutes = [
     {
         path: '/auth',
         routes: authRouter
+    },
+    {
+        path: '/orders',
+        routes: orderRouter
     },
 ]
 

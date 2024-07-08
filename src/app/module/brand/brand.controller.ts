@@ -11,7 +11,7 @@ const create_brand = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
-        message: 'brand create succesfull',
+        message: 'brand create successful',
         data: result
     })
 })
@@ -22,7 +22,7 @@ const get_all_brands = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
-        message: 'brands retrived succesfull',
+        message: 'brands retrived successful',
         data: result
     })
 })
@@ -34,7 +34,7 @@ const get_single_brands = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
-        message: 'brand retrived succesfull',
+        message: 'brand retrived successful',
         data: result
     })
 })

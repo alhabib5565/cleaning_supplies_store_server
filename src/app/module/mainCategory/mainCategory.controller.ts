@@ -11,7 +11,7 @@ const createMainCategory = catchAsync(async (req: Request, res: Response) => {
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
-        message: 'Main category create succesfull',
+        message: 'Main category create successful',
         data: result
     })
 })
@@ -23,7 +23,7 @@ const getAllMainCategories = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
-        message: 'Main categories retrived succesfull',
+        message: 'Main categories retrived successful',
         data: result
     })
 })
@@ -33,7 +33,7 @@ const getCategoriesForDropdown = catchAsync(async (req: Request, res: Response) 
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
-        message: 'Retrived categories for dropdown succesfull',
+        message: 'Retrived categories for dropdown successful',
         data: result
     })
 })
@@ -45,7 +45,7 @@ const getSingleMainCategory = catchAsync(async (req: Request, res: Response) => 
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
-        message: 'Main category retrived succesfull',
+        message: 'Main category retrived successful',
         data: result
     })
 })
