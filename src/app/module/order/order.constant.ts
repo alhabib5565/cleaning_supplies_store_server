@@ -1,3 +1,5 @@
+import { TOrderStatus } from './order.interface';
+
 export const ORDER_STATUS = {
   Pending: 'Pending',
   Rejected: 'Rejected',
@@ -6,6 +8,15 @@ export const ORDER_STATUS = {
   Delivered: 'Delivered',
   Cancelled: 'Cancelled',
 } as const;
+
+export const ORDER_STATUS_TRANSITIONS: Record<TOrderStatus, TOrderStatus[]> = {
+  Pending: ['Accepted', 'Rejected', 'Cancelled'],
+  Accepted: ['Shipped', 'Cancelled'],
+  Shipped: ['Delivered'],
+  Delivered: [],
+  Cancelled: [],
+  Rejected: [],
+};
 
 /**
     Pending → Accepted
