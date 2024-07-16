@@ -1,34 +1,41 @@
-import { ORDER_STATUS } from "./order.constant"
+import { ORDER_STATUS } from './order.constant';
 
 export type TOrder = {
-    _id: string
-    orderId: string
-    userEmail: string
-    products: TProductItem[]
-    totalQuantity: number
-    totalAmount: number
-    orderStatus: TOrderStatus
-    shippingAddress: TShippingAddress
-    paymentInfo: TPaymentInfo
-}
+  _id: string;
+  orderId: string;
+  recipient_name: string;
+  recipient_phone: number;
+  products: TProductItem[];
+  totalPrice: number;
+  orderStatus: TOrderStatus;
+  division: string;
+  district: string;
+  upazila: string;
+  union: string;
+  recipient_area: string;
+  item_type: string;
+  delivery_type: string;
+  paymentInfo: TPaymentInfo;
+};
 
-export type TOrderStatus = keyof typeof ORDER_STATUS
+export type TOrderStatus = keyof typeof ORDER_STATUS;
 
 export type TProductItem = {
-    productId: string
-    productName: string
-    quantity: number
-    price: number
-}
+  productId: string;
+  productName: string;
+  quantity: number;
+  price: number;
+  thumbnail: string;
+};
 
 export type TShippingAddress = {
-    street: string
-    city: string
-    state: string
-    postalCode: string
-    country: string
-}
+  division: string;
+  district: string;
+  upazila: string;
+  union: string;
+  recipient_area: string;
+};
 
 export type TPaymentInfo = {
-    method: string
-}
+  method: string;
+};

@@ -10,8 +10,9 @@ import { PRODUCT_STATUS } from './product.constant';
 
 const flashSaleSchema = new Schema<TFlashSale>(
   {
-    sale_end: { type: String, required: true },
-    sale_start: { type: String, required: true },
+    flashSaleDiscountPercentage: { type: Number, required: true },
+    flashSaleStartDate: { type: String, required: true },
+    flashSaleEndDate: { type: String, required: true },
   },
   {
     _id: false,
@@ -54,7 +55,7 @@ const product_schema = new Schema<TProduct>(
     discountPercentage: { type: Number },
     images: { type: [String] },
     variants: { type: variantsSchema },
-    flash_sale: { type: flashSaleSchema, required: false },
+    flashSale: { type: flashSaleSchema, required: false },
     weight: { type: weightSchema, required: false },
     features: { type: [String] },
     rating: { type: Number, default: 0 },

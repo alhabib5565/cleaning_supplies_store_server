@@ -1,46 +1,34 @@
 import { z } from 'zod';
 
-// Define Zod schemas for validation
 const ProductItemSchema = z.object({
-  productId: z.string().min(1, { message: 'Product ID is required' }),
-  productName: z.string().min(1, { message: 'Product name is required' }),
-  quantity: z
-    .number()
-    .int()
-    .positive()
-    .min(1, { message: 'Quantity must be a positive integer' }),
-  price: z
-    .number()
-    .positive()
-    .min(0.01, { message: 'Price must be a positive number' }),
+  productId: z.string().nonempty({ message: 'Product ID is required' }),
+  productName: z.string().nonempty({ message: 'Product name is required' }),
+  quantity: z.number().min(1, { message: 'Quantity must be at least 1' }),
+  price: z.number().min(0, { message: 'Price must be a positive number' }),
+  thumbnail: z.string().min(0, { message: 'Thumbnail is required' }),
 });
 
-const ShippingAddressSchema = z.object({
-  street: z.string().min(1, { message: 'Street is required' }),
-  city: z.string().min(1, { message: 'City is required' }),
-  state: z.string().min(1, { message: 'State is required' }),
-  postalCode: z.string().min(1, { message: 'Postal code is required' }),
-  country: z.string().min(1, { message: 'Country is required' }),
-});
-
-const PaymentInfoSchema = z.object({
-  method: z.string().min(1, { message: 'Payment method is required' }),
-});
-
-const createOrderValidationSchema = z.object({
-  userEmail: z.string().email({ message: 'Invalid email format' }),
-  products: z.array(ProductItemSchema),
-  totalQuantity: z
+// Define Zod schema for Order
+export const createOrderValidationSchema = z.object({
+  recipient_name: z
+    .string()
+    .nonempty({ message: 'Recipient name is required' }),
+  recipient_phone: z.string().min(11, {
+    message: 'Recipient phone number must be at least 11 characters',
+  }),
+  products: z
+    .array(ProductItemSchema)
+    .nonempty({ message: 'Products list cannot be empty' }),
+  totalPrice: z
     .number()
-    .int()
-    .positive()
-    .min(1, { message: 'Total quantity must be a positive integer' }),
-  totalAmount: z
-    .number()
-    .positive()
-    .min(0.01, { message: 'Total amount must be a positive number' }),
-  shippingAddress: ShippingAddressSchema,
-  paymentInfo: PaymentInfoSchema,
+    .min(0, { message: 'Total Price must be a positive number' }),
+  division: z.string().nonempty({ message: 'Division is required' }),
+  district: z.string().nonempty({ message: 'District is required' }),
+  upazila: z.string().nonempty({ message: 'Upazila is required' }),
+  union: z.string().nonempty({ message: 'Union is required' }),
+  recipient_area: z
+    .string()
+    .nonempty({ message: 'Recipient area is required' }),
 });
 
 export const OrderValidations = {

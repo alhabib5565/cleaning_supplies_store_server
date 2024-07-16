@@ -4,8 +4,9 @@ import { PRODUCT_STATUS } from './product.constant';
 export type TStatus = keyof typeof PRODUCT_STATUS;
 
 export type TFlashSale = {
-  sale_start: string;
-  sale_end: string;
+  flashSaleDiscountPercentage: number;
+  flashSaleStartDate: string;
+  flashSaleEndDate: string;
 };
 
 export type TColor = { _id: Types.ObjectId; label: string; hexCode: string };
@@ -18,8 +19,8 @@ export type TWeight = {
   unit: string;
 };
 export type TProduct = {
-  productName: string;
   productId: string;
+  productName: string;
   mainCategory: string;
   category: string;
   subCategory: string;
@@ -36,7 +37,7 @@ export type TProduct = {
   variants?: TVariants;
   brand?: string;
   type?: string;
-  flash_sale?: TFlashSale;
+  flashSale?: TFlashSale;
   weight?: TWeight;
   features?: string[];
   metaTitle?: string;

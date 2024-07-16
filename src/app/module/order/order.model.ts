@@ -1,10 +1,5 @@
 import { model, Schema } from 'mongoose';
-import {
-  TOrder,
-  TPaymentInfo,
-  TProductItem,
-  TShippingAddress,
-} from './order.interface';
+import { TOrder, TPaymentInfo, TProductItem } from './order.interface';
 import { ORDER_STATUS } from './order.constant';
 
 // Define Mongoose schema
@@ -13,34 +8,31 @@ const ProductItemSchema = new Schema<TProductItem>({
   productName: { type: String, required: true },
   quantity: { type: Number, required: true },
   price: { type: Number, required: true },
-});
-
-const ShippingAddressSchema = new Schema<TShippingAddress>({
-  street: { type: String, required: true },
-  city: { type: String, required: true },
-  state: { type: String, required: true },
-  postalCode: { type: String, required: true },
-  country: { type: String, required: true },
+  thumbnail: { type: String, required: true },
 });
 
 const PaymentInfoSchema = new Schema<TPaymentInfo>({
-  method: { type: String, required: true },
+  method: { type: String, default: 'Cash On Delivery' },
 });
 
 const OrderSchema = new Schema<TOrder>(
   {
     orderId: { type: String, required: true, unique: true },
-    userEmail: { type: String, required: true },
+    recipient_name: { type: String, required: true },
+    recipient_phone: { type: Number, required: true },
     products: { type: [ProductItemSchema], required: true },
-    totalQuantity: { type: Number, required: true },
-    totalAmount: { type: Number, required: true },
+    totalPrice: { type: Number, required: true },
     orderStatus: {
       type: String,
       enum: Object.keys(ORDER_STATUS),
       default: 'Pending',
     },
-    shippingAddress: { type: ShippingAddressSchema, required: true },
-    paymentInfo: { type: PaymentInfoSchema, required: true },
+    division: { type: String, required: true },
+    district: { type: String, required: true },
+    upazila: { type: String, required: true },
+    union: { type: String, required: true },
+    recipient_area: { type: String, required: true },
+    paymentInfo: { type: PaymentInfoSchema },
   },
   { timestamps: true },
 );
