@@ -17,5 +17,9 @@ router.put(
   validateRequest(ProductValidations.addFlashSaleFormValidationSchema),
   product_controller.addToFlashSale,
 );
+router.get(
+  '/flash-sale/all-flash-sale',
+  product_controller.getAllFlashSaleProducts,
+);
 
 export const product_router = router;

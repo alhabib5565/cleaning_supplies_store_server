@@ -50,9 +50,22 @@ const addToFlashSale = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAllFlashSaleProducts = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await product_services.getAllFlashSaleProducts();
+
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: 'Flash sale products retrived  successful',
+      data: result,
+    });
+  },
+);
+
 export const product_controller = {
   create_product,
   get_all_products,
   get_single_product,
   addToFlashSale,
+  getAllFlashSaleProducts,
 };

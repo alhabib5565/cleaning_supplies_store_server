@@ -11,8 +11,8 @@ import { PRODUCT_STATUS } from './product.constant';
 const flashSaleSchema = new Schema<TFlashSale>(
   {
     flashSaleDiscountPercentage: { type: Number, required: true },
-    flashSaleStartDate: { type: String, required: true },
-    flashSaleEndDate: { type: String, required: true },
+    flashSaleStartDate: { type: Date, required: true },
+    flashSaleEndDate: { type: Date, required: true },
   },
   {
     _id: false,
@@ -70,8 +70,21 @@ const product_schema = new Schema<TProduct>(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
   },
 );
+
+product_schema.virtual('currentlyFlashSale').get(function () {
+  const now = new Date();
+  const flashSale = this.flashSale;
+  if (flashSale) {
+    return (
+      flashSale?.flashSaleStartDate <= now && flashSale.flashSaleEndDate >= now
+    );
+  } else {
+    return false;
+  }
+});
 
 // product_schema.pre('save', async function (next) {
 

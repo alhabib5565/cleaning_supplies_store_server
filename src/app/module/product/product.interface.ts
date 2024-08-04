@@ -5,8 +5,8 @@ export type TStatus = keyof typeof PRODUCT_STATUS;
 
 export type TFlashSale = {
   flashSaleDiscountPercentage: number;
-  flashSaleStartDate: string;
-  flashSaleEndDate: string;
+  flashSaleStartDate: Date;
+  flashSaleEndDate: Date;
 };
 
 export type TColor = { _id: Types.ObjectId; label: string; hexCode: string };

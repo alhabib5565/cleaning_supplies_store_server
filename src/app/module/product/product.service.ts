@@ -63,9 +63,22 @@ const addToFlashSaleIntoDB = async (productId: string, payload: TFlashSale) => {
   return result;
 };
 
+const getAllFlashSaleProducts = async () => {
+  const now = new Date();
+  const result = Product_model.find({
+    flashSale: {
+      $exists: true,
+    },
+    'flashSale.flashSaleStartDate': { $lte: now },
+    'flashSale.flashSaleEndDate': { $gte: now },
+  });
+  return result;
+};
+
 export const product_services = {
   create_product_into_DB,
   get_all_products_from_DB,
   get_single_products_from_DB,
   addToFlashSaleIntoDB,
+  getAllFlashSaleProducts,
 };
