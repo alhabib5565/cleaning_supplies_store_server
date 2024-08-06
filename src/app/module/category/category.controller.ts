@@ -16,12 +16,15 @@ const create_category = catchAsync(async (req: Request, res: Response) => {
 });
 
 const get_all_categories = catchAsync(async (req: Request, res: Response) => {
-  const result = await category_services.get_all_category_from_DB(req.query);
+  const { result, meta } = await category_services.get_all_category_from_DB(
+    req.query,
+  );
 
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'categories retrived successful',
+    meta,
     data: result,
   });
 });

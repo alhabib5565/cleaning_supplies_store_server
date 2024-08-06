@@ -31,7 +31,14 @@ const create_product_into_DB = async (payload: TProduct) => {
 };
 
 const get_all_products_from_DB = async (query: Record<string, unknown>) => {
-  const searchAbleFields = ['title', 'brand', 'category', 'type'];
+  const searchAbleFields = [
+    'productName',
+    'mainCategory',
+    'category',
+    'subCategory',
+    'metaTitle',
+    'metaDescription',
+  ];
 
   const modelQuery = new QueryBuilder(query, Product_model.find())
     .search(searchAbleFields)
@@ -40,8 +47,12 @@ const get_all_products_from_DB = async (query: Record<string, unknown>) => {
     .paginate()
     .fields();
 
+  const meta = await modelQuery.countTotal();
   const result = await modelQuery.modelQuery;
-  return result;
+  return {
+    meta,
+    result,
+  };
 };
 
 const get_single_products_from_DB = async (id: string) => {

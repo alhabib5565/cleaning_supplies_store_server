@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { product_services } from './product.service';
 import { catchAsync } from '../../utils/catchAsync';
 import httpStatus from 'http-status';
+import { sendResponse } from '../../utils/sendResponse';
 
 const create_product = catchAsync(async (req: Request, res: Response) => {
   const product = req.body;
@@ -16,11 +17,13 @@ const create_product = catchAsync(async (req: Request, res: Response) => {
 
 const get_all_products = catchAsync(async (req: Request, res: Response) => {
   const query = req.query;
-  const result = await product_services.get_all_products_from_DB(query);
-
-  res.status(httpStatus.OK).json({
+  const { result, meta } =
+    await product_services.get_all_products_from_DB(query);
+  sendResponse(res, {
     success: true,
-    message: 'products retrived successful',
+    statusCode: httpStatus.OK,
+    message: 'products retrived successfully',
+    meta: meta,
     data: result,
   });
 });
@@ -29,8 +32,9 @@ const get_single_product = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const result = await product_services.get_single_products_from_DB(id);
 
-  res.status(httpStatus.OK).json({
+  sendResponse(res, {
     success: true,
+    statusCode: httpStatus.OK,
     message: 'Single product retrived successful',
     data: result,
   });
@@ -43,8 +47,9 @@ const addToFlashSale = catchAsync(async (req: Request, res: Response) => {
     req.body,
   );
 
-  res.status(httpStatus.OK).json({
+  sendResponse(res, {
     success: true,
+    statusCode: httpStatus.OK,
     message: 'Add to flash sale successful',
     data: result,
   });
@@ -54,8 +59,9 @@ const getAllFlashSaleProducts = catchAsync(
   async (req: Request, res: Response) => {
     const result = await product_services.getAllFlashSaleProducts();
 
-    res.status(httpStatus.OK).json({
+    sendResponse(res, {
       success: true,
+      statusCode: httpStatus.OK,
       message: 'Flash sale products retrived  successful',
       data: result,
     });

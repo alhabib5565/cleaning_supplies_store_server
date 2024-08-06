@@ -9,14 +9,18 @@ import { Product_model } from '../product/product.model';
 
 const create_category_into_DB = async (payload: TCategory) => {
   const mainCategory = await MainCategory.findById(payload.mainCategory);
+
   if (!mainCategory) {
     throw new AppError(httpStatus.NOT_FOUND, 'Main category does not exist');
   }
+
   payload._id = payload.categoryName.split(' ').join('-').toLowerCase();
+
   payload.categoryId =
     payload.categoryName.split('').slice(0, 2).join('').toUpperCase() +
     '-' +
     (await generateCategoryId());
+
   const result = await Category.create(payload);
   return result;
 };
@@ -39,8 +43,12 @@ const get_all_category_from_DB = async (query: Record<string, unknown>) => {
     .paginate()
     .fields();
 
+  const meta = await modelQuery.countTotal();
   const result = await modelQuery.modelQuery;
-  return result;
+  return {
+    result,
+    meta,
+  };
 };
 
 const get_single_category_from_DB = async (id: string) => {
