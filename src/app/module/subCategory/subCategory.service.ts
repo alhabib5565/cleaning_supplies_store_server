@@ -46,8 +46,12 @@ const getAllSubCategoryFromDB = async (query: Record<string, unknown>) => {
     .paginate()
     .fields();
 
+  const meta = await modelQuery.countTotal();
   const result = await modelQuery.modelQuery;
-  return result;
+  return {
+    result,
+    meta,
+  };
 };
 const getSingleSubCategoryFromDB = async (id: string) => {
   const result = await SubCategory.findOne({ _id: id });

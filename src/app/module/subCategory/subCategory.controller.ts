@@ -16,12 +16,15 @@ const createSubCategory = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllSubCategories = catchAsync(async (req: Request, res: Response) => {
-  const result = await SubCategoryService.getAllSubCategoryFromDB(req.query);
+  const { result, meta } = await SubCategoryService.getAllSubCategoryFromDB(
+    req.query,
+  );
 
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'Sub categories retrived successful',
+    meta,
     data: result,
   });
 });
