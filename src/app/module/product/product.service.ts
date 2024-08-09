@@ -7,6 +7,7 @@ import AppError from '../../error/AppError';
 import { Category } from '../category/category.model';
 import { SubCategory } from '../subCategory/subCategory.model';
 import { generatProductId } from './product.utils';
+import { Types } from 'mongoose';
 
 const create_product_into_DB = async (payload: TProduct) => {
   const mainCategory = await MainCategory.findById(payload.mainCategory);
@@ -56,7 +57,69 @@ const get_all_products_from_DB = async (query: Record<string, unknown>) => {
 };
 
 const get_single_products_from_DB = async (id: string) => {
-  const result = await Product_model.findOne({ _id: id });
+  const result = await Product_model.aggregate([
+    {
+      $match: { _id: new Types.ObjectId(id) },
+    },
+    {
+      $lookup: {
+        from: 'productfeedbacks',
+        localField: '_id',
+        foreignField: 'productId',
+        as: 'productFeedbacks',
+      },
+    },
+    {
+      $unwind: {
+        path: '$productFeedbacks',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'productFeedbacks.userId',
+        foreignField: '_id',
+        as: 'productFeedbacks.user',
+      },
+    },
+    {
+      $unwind: {
+        path: '$productFeedbacks.user',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $group: {
+        _id: '$_id',
+        productData: { $first: '$$ROOT' },
+        productFeedbacks: {
+          $push: {
+            rating: '$productFeedbacks.rating',
+            review: '$productFeedbacks.review',
+            createdAt: '$productFeedbacks.createdAt',
+            user: {
+              name: '$productFeedbacks.user.name',
+              email: '$productFeedbacks.user.email',
+            },
+          },
+        },
+      },
+    },
+    {
+      $addFields: {
+        'productData.productFeedbacks': '$productFeedbacks',
+      },
+    },
+
+    {
+      $replaceRoot: {
+        newRoot: '$productData',
+      },
+    },
+  ]);
+
   return result;
 };
 

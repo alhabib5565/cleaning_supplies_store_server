@@ -7,12 +7,17 @@ import { notFound } from './app/middlewares/notFound';
 const app = express();
 
 app.use(express.json());
-app.use(cors());
-app.use(cookieParser())
+app.use(
+  cors({
+    origin: 'https://quickshop-kohl.vercel.app', // Specify the exact origin
+    credentials: true,
+  }),
+);
+app.use(cookieParser());
 
-app.use('/api/v1', routes)
+app.use('/api/v1', routes);
 
-app.use(globalErrorHandler)
-app.use(notFound)
+app.use(globalErrorHandler);
+app.use(notFound);
 
 export { app };

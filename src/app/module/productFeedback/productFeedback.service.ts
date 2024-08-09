@@ -7,6 +7,7 @@ import httpStatus from 'http-status';
 import { productFeedback } from './productFeedback.model';
 
 const createProductFeedback = async (payload: TProductFeedback) => {
+  console.log(payload, 'payload');
   const isProductExists = await Product_model.findById(payload.productId);
   if (!isProductExists) {
     throw new AppError(httpStatus.NOT_FOUND, 'This product is not found!!');
