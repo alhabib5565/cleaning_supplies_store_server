@@ -120,7 +120,7 @@ const get_single_products_from_DB = async (id: string) => {
     },
   ]);
 
-  return result;
+  return result[0];
 };
 
 const addToFlashSaleIntoDB = async (productId: string, payload: TFlashSale) => {

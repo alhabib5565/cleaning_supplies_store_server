@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { startSession } from 'mongoose';
 import { TProductFeedback } from './productFeedback.interface';
 import { Product_model } from '../product/product.model';
@@ -66,6 +65,7 @@ const createProductFeedback = async (payload: TProductFeedback) => {
     await session.endSession();
 
     return review;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     await session.abortTransaction();
     await session.endSession();

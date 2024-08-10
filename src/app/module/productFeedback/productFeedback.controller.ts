@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 
 const createProductFeedback = catchAsync(
   async (req: Request, res: Response) => {
-    req.body.userId = req.user.user_id;
+    // req.body.userId = req.user.user_id;
     const result = await ProductFeedbackService.createProductFeedback(req.body);
 
     sendResponse(res, {

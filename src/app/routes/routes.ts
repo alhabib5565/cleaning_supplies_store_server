@@ -8,6 +8,10 @@ import { colorRouter } from '../module/color/color.routes';
 import { authRouter } from '../module/auth/auth.route';
 import { orderRouter } from '../module/order/order.route';
 import { productFeedbackRouter } from '../module/productFeedback/productFeedback.route';
+import { divisionRouter } from '../module/bdDivision/bdDivision.route';
+import { districtRouter } from '../module/bdDistricts/bdDistricts.route';
+import { upazilaRouter } from '../module/bdUpazilas/bdUpazilas.route';
+import { unionRouter } from '../module/bdUnion/bdUnion.route';
 const router = express.Router();
 
 const appRoutes = [
@@ -46,6 +50,22 @@ const appRoutes = [
   {
     path: '/feedbacks',
     routes: productFeedbackRouter,
+  },
+  {
+    path: '/divisions',
+    routes: divisionRouter,
+  },
+  {
+    path: '/districts',
+    routes: districtRouter,
+  },
+  {
+    path: '/upazilas',
+    routes: upazilaRouter,
+  },
+  {
+    path: '/unions',
+    routes: unionRouter,
   },
 ];
 
