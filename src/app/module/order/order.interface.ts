@@ -1,8 +1,10 @@
+import { Types } from 'mongoose';
 import { ORDER_STATUS } from './order.constant';
 
 export type TOrder = {
   _id: string;
   orderId: string;
+  user: Types.ObjectId;
   recipient_name: string;
   recipient_phone: number;
   products: TProductItem[];

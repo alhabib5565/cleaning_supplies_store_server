@@ -4,6 +4,7 @@ import { OrderService } from './order.service';
 import httpStatus from 'http-status';
 
 const createOrder = catchAsync(async (req: Request, res: Response) => {
+  req.body.user = req.user.userId;
   const orderData = req.body;
   const result = await OrderService.createOrderIntoDB(orderData);
 
@@ -20,6 +21,16 @@ const getAllOrder = catchAsync(async (req: Request, res: Response) => {
   res.status(httpStatus.OK).json({
     success: true,
     message: 'Orders retrieved successful',
+    data: result,
+  });
+});
+
+const getAllOrderByUserId = catchAsync(async (req: Request, res: Response) => {
+  const result = await OrderService.getAllOrderByUserId(req.user.user_id);
+
+  res.status(httpStatus.OK).json({
+    success: true,
+    message: 'Your Orders retrieved successful',
     data: result,
   });
 });
@@ -49,4 +60,5 @@ export const OrderController = {
   getAllOrder,
   getSingleOrder,
   updateOrder,
+  getAllOrderByUserId,
 };

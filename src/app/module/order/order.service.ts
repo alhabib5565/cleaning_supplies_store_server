@@ -42,7 +42,7 @@ const createOrderIntoDB = async (payload: TOrder) => {
 const getAllOrder = async (query: Record<string, unknown>) => {
   const searchAbleFields = ['userEmail', 'orderStatus', 'shippingAddress.city'];
 
-  const modelQuery = new QueryBuilder(query, Order.find())
+  const modelQuery = new QueryBuilder(query, Order.find().populate('user'))
     .search(searchAbleFields)
     .filter()
     .filter()
@@ -56,7 +56,83 @@ const getAllOrder = async (query: Record<string, unknown>) => {
 };
 
 const getSingleOrder = async (orderId: string) => {
-  const result = await Order.findOne({ orderId });
+  const result = await Order.aggregate([
+    {
+      $match: { orderId },
+    },
+    {
+      $lookup: {
+        from: 'bd-divisions',
+        foreignField: 'id',
+        localField: 'division',
+        as: 'division',
+      },
+    },
+    {
+      $unwind: {
+        path: '$division',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: 'bd-districts',
+        foreignField: 'id',
+        localField: 'district',
+        as: 'district',
+      },
+    },
+    {
+      $unwind: {
+        path: '$district',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $group: {
+        _id: '$district.division_id',
+        orderData: { $first: '$$ROOT' },
+      },
+    },
+    {
+      $lookup: {
+        from: 'bd-upazilas',
+        foreignField: 'id',
+        localField: 'orderData.upazila',
+        as: 'orderData.upazila',
+      },
+    },
+    {
+      $unwind: {
+        path: '$orderData.upazila',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: 'users',
+        foreignField: '_id',
+        localField: 'orderData.user',
+        as: 'orderData.user',
+      },
+    },
+    {
+      $unwind: {
+        path: '$orderData.user',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $replaceRoot: {
+        newRoot: '$orderData',
+      },
+    },
+  ]);
+  return result[0];
+};
+
+const getAllOrderByUserId = async (userId: string) => {
+  const result = await Order.find({ userId }).populate('userId');
   return result;
 };
 
@@ -96,9 +172,11 @@ const updateOrder = async (orderId: string, payload: Partial<TOrder>) => {
 
   return result;
 };
+
 export const OrderService = {
   createOrderIntoDB,
   getAllOrder,
   getSingleOrder,
   updateOrder,
+  getAllOrderByUserId,
 };

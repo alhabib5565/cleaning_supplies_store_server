@@ -33,7 +33,7 @@ export const auth = () => {
     }
 
     req.user = decoded;
-    req.user._id = user._id;
+    req.user.userId = user._id;
     next();
   });
 };
