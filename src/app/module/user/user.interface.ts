@@ -1,22 +1,25 @@
-import { USER_ROLE, USER_STATUS } from "./user.constant"
+import { USER_ROLE, USER_STATUS } from './user.constant';
 
 export type TPasswordHistory = {
-    password: string,
-    changed_at: Date
-}
+  password: string;
+  changed_at: Date;
+};
 
 export type TUser = {
-    userId: string
-    name: string,
-    email: string
-    role: TUserRole
-    password: string
-    passwordHistory: TPasswordHistory[]
-    passwordChangeAt: Date
-    status: TUserStatus
-    isDeleted: boolean,
-}
+  userId: string;
+  name: string;
+  email: string;
+  role: TUserRole;
+  password: string;
+  passwordHistory: TPasswordHistory[];
+  passwordChangeAt: Date;
+  status: TUserStatus;
+  isDeleted: boolean;
+  isVerified: boolean;
+  verificationCode: number;
+  verificationExpires: number;
+};
 
-export type TUserStatus = keyof typeof USER_STATUS
+export type TUserStatus = keyof typeof USER_STATUS;
 
-export type TUserRole = keyof typeof USER_ROLE
+export type TUserRole = keyof typeof USER_ROLE;

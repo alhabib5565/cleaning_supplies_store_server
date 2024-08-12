@@ -15,6 +15,28 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const verifyEmail = catchAsync(async (req: Request, res: Response) => {
+  const result = await AuthService.verifyEmail(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    message: 'Verification successful. You can now proceed.',
+    data: result,
+  });
+});
+
+const resendVerificationCode = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await AuthService.resendVerificationCode(req.body);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      message: 'A new verification code has been sent to your email.',
+      data: result,
+    });
+  },
+);
+
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { accessToken, refreshToken } = await AuthService.loginUser(req.body);
   res.cookie('refreshToken', refreshToken, {
@@ -80,6 +102,8 @@ const resetPassword = catchAsync(async (req, res) => {
 
 export const AuthController = {
   createUser,
+  verifyEmail,
+  resendVerificationCode,
   loginUser,
   changePassword,
   requestPasswordReset,

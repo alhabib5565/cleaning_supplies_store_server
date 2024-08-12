@@ -5,39 +5,38 @@ import { UserValidation } from '../user/user.validation';
 import { AuthValidation } from './auth.validation';
 import { auth } from '../../middlewares/auth';
 
-const router = express.Router()
+const router = express.Router();
 
 router.post(
-    '/create-user',
-    validateRequest(UserValidation.createUserValidationSchema),
-    AuthController.createUser
-)
+  '/create-user',
+  validateRequest(UserValidation.createUserValidationSchema),
+  AuthController.createUser,
+);
 
 router.post(
-    '/login',
-    validateRequest(AuthValidation.loginUserValidationSchema),
-    AuthController.loginUser
-)
+  '/verify-email',
+  validateRequest(AuthValidation.verifyEmailValidationSchema),
+  AuthController.verifyEmail,
+);
 
 router.post(
-    '/change-password',
-    auth(),
-    AuthController.changePassword
-)
+  '/resend-verification-code',
+  validateRequest(AuthValidation.verifyResendVerificationCode),
+  AuthController.resendVerificationCode,
+);
 
 router.post(
-    '/request-for-reset-password',
-    AuthController.requestPasswordReset
-)
+  '/login',
+  validateRequest(AuthValidation.loginUserValidationSchema),
+  AuthController.loginUser,
+);
 
-router.post(
-    '/reset-password',
-    AuthController.resetPassword
-)
+router.post('/change-password', auth(), AuthController.changePassword);
 
-router.post(
-    '/refresh-toekn',
-    AuthController.refreshToken
-)
+router.post('/request-for-reset-password', AuthController.requestPasswordReset);
 
-export const authRouter = router
+router.post('/reset-password', AuthController.resetPassword);
+
+router.post('/refresh-toekn', AuthController.refreshToken);
+
+export const authRouter = router;
