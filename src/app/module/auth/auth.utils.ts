@@ -15,7 +15,7 @@ export const verifyToken = (token: string, secret: string) => {
 };
 
 export const generateVerificationCode = () => {
-  const verificationCode = Math.floor(100000 + Math.random() * 900000);
+  const verificationCode = Math.floor(1000 + Math.random() * 9000);
   const verificationExpires = Date.now() + 60000;
   return { verificationCode, verificationExpires };
 };

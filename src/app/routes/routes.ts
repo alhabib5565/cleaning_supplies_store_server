@@ -12,6 +12,7 @@ import { divisionRouter } from '../module/bdDivision/bdDivision.route';
 import { districtRouter } from '../module/bdDistricts/bdDistricts.route';
 import { upazilaRouter } from '../module/bdUpazilas/bdUpazilas.route';
 import { unionRouter } from '../module/bdUnion/bdUnion.route';
+import { user_router } from '../module/user/user.route';
 const router = express.Router();
 
 const appRoutes = [
@@ -38,6 +39,10 @@ const appRoutes = [
   {
     path: '/brands',
     routes: brand_router,
+  },
+  {
+    path: '/users',
+    routes: user_router,
   },
   {
     path: '/auth',

@@ -14,23 +14,27 @@ import {
 import { JwtPayload } from 'jsonwebtoken';
 import { sendEmail } from '../../utils/sendMail';
 
-const createUserIntoDB = async (payLoad: TUser) => {
+const createUserIntoDB = async (payload: TUser) => {
   const { verificationCode, verificationExpires } = generateVerificationCode();
 
-  payLoad.userId = 'C-' + (await generateUserId());
-  payLoad.role = 'Customer';
-  payLoad.verificationCode = verificationCode;
-  payLoad.verificationExpires = verificationExpires;
+  try {
+    payload.userId = 'C-' + (await generateUserId());
+    payload.role = 'Customer';
+    payload.verificationCode = verificationCode;
+    payload.verificationExpires = verificationExpires;
 
-  const result = await User.create(payLoad);
+    const result = await User.create(payload);
 
-  // send verification email
-  sendEmail(
-    payLoad.email,
-    'Verify your email within 1 minute',
-    `Your varification code is: ${verificationCode}`,
-  );
-  return result;
+    // send verification email
+    await sendEmail(
+      payload.email,
+      'Verify your email within 1 minute',
+      `Your varification code is: ${verificationCode}`,
+    );
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const verifyEmail = async (payload: TVerifyEmailPayload) => {
@@ -89,7 +93,7 @@ const resendVerificationCode = async (payload: Partial<TUser>) => {
     },
   );
   // send verification email
-  sendEmail(
+  await sendEmail(
     user.email,
     'Verify your email within 1 minute',
     `Your varification code is: ${verificationCode}`,
