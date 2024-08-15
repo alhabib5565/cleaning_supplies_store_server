@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose';
-import { TPasswordHistory, TUser } from './user.interface';
+import { TPasswordHistory, TUser, TUserLocation } from './user.interface';
 import { USER_ROLE, USER_STATUS } from './user.constant';
 import bcrypt from 'bcrypt';
 import config from '../../config';
@@ -8,6 +8,19 @@ const passwordHistorySchema = new Schema<TPasswordHistory>(
   {
     password: String,
     changed_at: Date,
+  },
+  {
+    _id: false,
+  },
+);
+
+const userLocationSchem = new Schema<TUserLocation>(
+  {
+    division: { type: String },
+    district: { type: String },
+    upazila: { type: String },
+    union: { type: String },
+    area: { type: String },
   },
   {
     _id: false,
@@ -30,6 +43,11 @@ const userSchema = new Schema<TUser>(
     status: { type: String, enum: Object.keys(USER_STATUS), default: 'Active' },
     isDeleted: { type: Boolean, default: false },
     isVerified: { type: Boolean, default: false },
+    phone: { type: Number },
+    imageURL: { type: String },
+    userLocation: {
+      type: userLocationSchem,
+    },
     verificationCode: { type: Number },
     verificationExpires: { type: Number },
   },

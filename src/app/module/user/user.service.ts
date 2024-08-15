@@ -26,6 +26,11 @@ const getSingleUser = async (userId: string) => {
   return result;
 };
 
+const getMe = async (userId: string) => {
+  const result = await User.findOne({ _id: userId });
+  return result;
+};
+
 const updateUser = async (userId: string, payload: Partial<TUser>) => {
   const user = await User.findOne({ userId });
   if (!user) {
@@ -42,4 +47,5 @@ export const UserService = {
   getAlluser,
   getSingleUser,
   updateUser,
+  getMe,
 };

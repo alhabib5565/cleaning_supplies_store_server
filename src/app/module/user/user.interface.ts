@@ -5,6 +5,14 @@ export type TPasswordHistory = {
   changed_at: Date;
 };
 
+export type TUserLocation = {
+  division?: string;
+  district?: string;
+  upazila?: string;
+  union?: string;
+  area?: string;
+};
+
 export type TUser = {
   userId: string;
   name: string;
@@ -16,6 +24,9 @@ export type TUser = {
   status: TUserStatus;
   isDeleted: boolean;
   isVerified: boolean;
+  imageURL?: string;
+  phone?: number;
+  userLocation?: TUserLocation;
   verificationCode: number;
   verificationExpires: number;
 };

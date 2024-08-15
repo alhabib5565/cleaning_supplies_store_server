@@ -131,8 +131,8 @@ const getSingleOrder = async (orderId: string) => {
   return result[0];
 };
 
-const getAllOrderByUserId = async (userId: string) => {
-  const result = await Order.find({ userId }).populate('userId');
+const getAllOrderByUserId = async (user: string) => {
+  const result = await Order.find({ user }).populate('user').sort('-createdAt');
   return result;
 };
 
