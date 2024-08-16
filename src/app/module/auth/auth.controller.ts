@@ -10,7 +10,7 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: 'Registration successful',
+    message: 'Registration successfully done',
     data: result,
   });
 });
@@ -68,8 +68,6 @@ const requestPasswordReset = catchAsync(async (req: Request, res: Response) => {
     message: 'Send password reset link',
     data: result,
   });
-
-  return null;
 });
 
 const refreshToken = catchAsync(async (req, res) => {

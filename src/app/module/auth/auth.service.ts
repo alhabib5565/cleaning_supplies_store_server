@@ -16,25 +16,24 @@ import { sendEmail } from '../../utils/sendMail';
 
 const createUserIntoDB = async (payload: TUser) => {
   const { verificationCode, verificationExpires } = generateVerificationCode();
+  // try {
+  payload.userId = 'C-' + (await generateUserId());
+  payload.role = 'Customer';
+  payload.verificationCode = verificationCode;
+  payload.verificationExpires = verificationExpires;
 
-  try {
-    payload.userId = 'C-' + (await generateUserId());
-    payload.role = 'Customer';
-    payload.verificationCode = verificationCode;
-    payload.verificationExpires = verificationExpires;
+  const result = await User.create(payload);
 
-    const result = await User.create(payload);
-
-    // send verification email
-    await sendEmail(
-      payload.email,
-      'Verify your email within 1 minute',
-      `Your varification code is: ${verificationCode}`,
-    );
-    return result;
-  } catch (error) {
-    console.log(error);
-  }
+  // send verification email
+  await sendEmail(
+    payload.email,
+    'Verify your email within 1 minute',
+    `Your varification code is: ${verificationCode}`,
+  );
+  return result;
+  // } catch (error) {
+  //   throw new AppError(BAD_REQUEST, error.message);
+  // }
 };
 
 const verifyEmail = async (payload: TVerifyEmailPayload) => {

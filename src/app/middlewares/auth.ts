@@ -5,8 +5,9 @@ import httpStatus from 'http-status';
 import { verifyToken } from '../module/auth/auth.utils';
 import config from '../config';
 import { User } from '../module/user/user.model';
+import { TUserRole } from '../module/user/user.interface';
 
-export const auth = () => {
+export const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
     if (!token) {
@@ -29,6 +30,13 @@ export const auth = () => {
 
     if (user.status === 'Blocked') {
       throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked ! !');
+    }
+
+    if (requiredRoles && !requiredRoles.includes(decoded.role)) {
+      throw new AppError(
+        httpStatus.UNAUTHORIZED,
+        'You are not authorized  hi!',
+      );
     }
 
     req.user = decoded;
