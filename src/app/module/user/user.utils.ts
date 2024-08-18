@@ -7,7 +7,7 @@ export const generateUserId = async () => {
     createdAt: -1,
   });
   if (lastUserId) {
-    currentId = lastUserId.userId.substring(3);
+    currentId = lastUserId.userId;
   }
   return (Number(currentId) + 1).toString().padStart(4, '0');
 };

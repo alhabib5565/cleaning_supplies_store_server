@@ -6,6 +6,7 @@ import { Order } from './order.model';
 import { QueryBuilder } from '../../builder/QueryBuilder';
 import { generatOrderId } from './order.utils';
 import { ORDER_STATUS_TRANSITIONS } from './order.constant';
+import { Types } from 'mongoose';
 
 const createOrderIntoDB = async (payload: TOrder) => {
   const productIds = payload.products.map((p) => p.productId);
@@ -32,7 +33,7 @@ const createOrderIntoDB = async (payload: TOrder) => {
       );
     }
   }
-
+  console.log(await generatOrderId(), 'idg');
   payload.orderId = await generatOrderId();
 
   const result = await Order.create(payload);
@@ -40,7 +41,12 @@ const createOrderIntoDB = async (payload: TOrder) => {
 };
 
 const getAllOrder = async (query: Record<string, unknown>) => {
-  const searchAbleFields = ['userEmail', 'orderStatus', 'shippingAddress.city'];
+  const searchAbleFields = [
+    'recipient_name',
+    'recipient_area',
+    'union',
+    'orderId',
+  ];
 
   const modelQuery = new QueryBuilder(query, Order.find().populate('user'))
     .search(searchAbleFields)
@@ -50,9 +56,10 @@ const getAllOrder = async (query: Record<string, unknown>) => {
     .paginate()
     .fields();
 
+  const meta = await modelQuery.countTotal();
   const result = await modelQuery.modelQuery;
 
-  return result;
+  return { result, meta };
 };
 
 const getSingleOrder = async (orderId: string) => {
@@ -173,10 +180,27 @@ const updateOrder = async (orderId: string, payload: Partial<TOrder>) => {
   return result;
 };
 
+const orderStatusOverviewForAUser = async (userId: string) => {
+  const result = await Order.aggregate([
+    {
+      $match: { user: new Types.ObjectId(userId) },
+    },
+    {
+      $group: {
+        _id: '$orderStatus',
+        total: { $sum: 1 },
+      },
+    },
+  ]);
+
+  return result;
+};
+
 export const OrderService = {
   createOrderIntoDB,
   getAllOrder,
   getSingleOrder,
   updateOrder,
   getAllOrderByUserId,
+  orderStatusOverviewForAUser,
 };

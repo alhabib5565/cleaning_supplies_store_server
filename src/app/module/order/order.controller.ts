@@ -16,12 +16,13 @@ const createOrder = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllOrder = catchAsync(async (req: Request, res: Response) => {
-  const result = await OrderService.getAllOrder(req.query);
+  const { result, meta } = await OrderService.getAllOrder(req.query);
 
   res.status(httpStatus.OK).json({
     success: true,
     message: 'Orders retrieved successful',
     data: result,
+    meta,
   });
 });
 
@@ -34,6 +35,20 @@ const getAllOrderByUserId = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+const orderStatusOverviewForAUser = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await OrderService.orderStatusOverviewForAUser(
+      req.user.user_id,
+    );
+
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: 'User order status overview retrieved successful',
+      data: result,
+    });
+  },
+);
 
 const getSingleOrder = catchAsync(async (req: Request, res: Response) => {
   const result = await OrderService.getSingleOrder(req.params.orderId);
@@ -61,4 +76,5 @@ export const OrderController = {
   getSingleOrder,
   updateOrder,
   getAllOrderByUserId,
+  orderStatusOverviewForAUser,
 };

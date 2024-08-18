@@ -17,6 +17,22 @@ const getTotalCountWithLastMonthPercentage = catchAsync(
   },
 );
 
+const getTotalCountWithLastMonthPercentageForUser = catchAsync(
+  async (req: Request, res: Response) => {
+    const result =
+      await AnalyticsService.getTotalCountWithLastMonthPercentageForUser(
+        req.user.user_id,
+      );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      message:
+        'Get total count with last month percentage for user retrived successful',
+      data: result,
+    });
+  },
+);
+
 const getLastSavenTotalSales = catchAsync(
   async (req: Request, res: Response) => {
     const result = await AnalyticsService.getLastSavenTotalSales();
@@ -29,7 +45,43 @@ const getLastSavenTotalSales = catchAsync(
   },
 );
 
+const totalSalePerMonthForAYear = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await AnalyticsService.totalSalePerMonthForAYear();
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      message: ' Total sales sales per month for a year retrived successful',
+      data: result,
+    });
+  },
+);
+
+const orderStatusOverview = catchAsync(async (req: Request, res: Response) => {
+  const result = await AnalyticsService.orderStatusOverview();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    message: 'Order status overview retrived successful',
+    data: result,
+  });
+});
+
+const userStatusOverview = catchAsync(async (req: Request, res: Response) => {
+  const result = await AnalyticsService.userStatusOverview();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    message: 'user status overview retrived successful',
+    data: result,
+  });
+});
+
 export const AnalyticsController = {
   getTotalCountWithLastMonthPercentage,
   getLastSavenTotalSales,
+  totalSalePerMonthForAYear,
+  orderStatusOverview,
+  userStatusOverview,
+  getTotalCountWithLastMonthPercentageForUser,
 };

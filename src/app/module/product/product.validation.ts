@@ -7,13 +7,20 @@ const addFlashSaleFormValidationSchema = z.object({
         invalid_type_error: 'Please provide a valid number',
       })
       .min(1, { message: 'Discount percentage cannot be less than 1' })
-      .max(100, { message: 'Discount percentage cannot be more than 100' }),
-    flashSaleStartDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
-      message: 'Invalid start date',
-    }),
-    flashSaleEndDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
-      message: 'Invalid end date',
-    }),
+      .max(100, { message: 'Discount percentage cannot be more than 100' })
+      .optional(),
+    flashSaleStartDate: z
+      .string()
+      .refine((date) => !isNaN(Date.parse(date)), {
+        message: 'Invalid start date',
+      })
+      .optional(),
+    flashSaleEndDate: z
+      .string()
+      .refine((date) => !isNaN(Date.parse(date)), {
+        message: 'Invalid end date',
+      })
+      .optional(),
   }),
 });
 // .refine(

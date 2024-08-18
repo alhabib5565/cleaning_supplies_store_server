@@ -79,7 +79,7 @@ const getLastSavenTotalSales = async () => {
       $match: {
         createdAt: {
           $gte: sevenDaysAgo,
-          $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000), // আজকের দিন পর্যন্ত
+          $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
         },
       },
     },
@@ -103,24 +103,148 @@ const getLastSavenTotalSales = async () => {
     },
   ]);
 
-  // নিশ্চিতভাবে ৭ দিনের জন্য সেল ডেটা আনুন
-  // const result = [];
+  const result = [];
 
-  // for (let i = 6; i >= 0; i--) {
-  //   const date = new Date();
-  //   date.setDate(today.getDate() - i);
-  //   const formattedDate = date.toISOString().slice(0, 10);
-  //   const salesForDate = salesData.find((data) => data.date === formattedDate);
-  //   result.push({
-  //     date: formattedDate,
-  //     sales: salesForDate ? salesForDate.sales : 0,
-  //   });
-  // }
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(today);
+    date.setDate(today.getDate() - i);
+    const formattedSaleDate = date.toISOString().slice(0, 10);
+    const salesForDate = salesData.find(
+      (data) => data.date === formattedSaleDate,
+    );
+    result.push({
+      date: formattedSaleDate,
+      sales: salesForDate ? salesForDate.sales : 0,
+    });
+  }
 
-  return salesData;
+  return result;
+};
+
+const totalSalePerMonthForAYear = async () => {
+  const monthlySalesData = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: new Date(`2024-01-01T00:00:00Z`),
+          $lt: new Date(`${2024 + 1}-01-01T00:00:00Z`),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: { $dateToString: { format: '%Y-%m', date: '$createdAt' } },
+        totalSales: { $sum: '$totalPrice' },
+      },
+    },
+    {
+      $sort: {
+        _id: 1,
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        date: '$_id',
+        totalSales: '$totalSales',
+      },
+    },
+  ]);
+
+  const result = [];
+  for (let i = 0; i < 12; i++) {
+    const date = new Date();
+    date.setMonth(i);
+    const formattedSaleDate = date.toISOString().slice(0, 7);
+
+    const salesForMonth = monthlySalesData.find(
+      (sale) => sale.date === formattedSaleDate,
+    );
+
+    result.push({
+      date: formattedSaleDate,
+      totalSales: salesForMonth ? salesForMonth.totalSales : 0,
+    });
+  }
+
+  return result;
+};
+
+const orderStatusOverview = async () => {
+  const result = await Order.aggregate([
+    {
+      $group: {
+        _id: '$orderStatus',
+        total: { $sum: 1 },
+      },
+    },
+  ]);
+
+  return result;
+};
+
+const userStatusOverview = async () => {
+  const result = await User.aggregate([
+    {
+      $group: {
+        _id: '$status',
+        total: { $sum: 1 },
+      },
+    },
+  ]);
+
+  return result;
+};
+
+const getTotalCountWithLastMonthPercentageForUser = async (userId: string) => {
+  const startOfLastMonth = new Date();
+  startOfLastMonth.setMonth(startOfLastMonth.getMonth() - 1);
+  startOfLastMonth.setDate(1);
+  startOfLastMonth.setHours(0, 0, 0, 0);
+
+  const endOfLastMonth = new Date(startOfLastMonth);
+  endOfLastMonth.setMonth(endOfLastMonth.getMonth() + 1);
+  endOfLastMonth.setDate(0);
+  endOfLastMonth.setHours(23, 59, 59, 999);
+
+  const totalFeedbacks = await productFeedback.countDocuments({
+    userId,
+  });
+  const totalOrders = await Order.countDocuments({
+    user: userId,
+  });
+
+  const lastMonthFeedbacks = await productFeedback.countDocuments({
+    createdAt: {
+      $gte: startOfLastMonth,
+      $lte: endOfLastMonth,
+    },
+  });
+
+  const lastMonthOrders = await Order.countDocuments({
+    createdAt: {
+      $gte: startOfLastMonth,
+      $lte: endOfLastMonth,
+    },
+  });
+
+  return {
+    totalFeedbacks,
+    lastMonthFeedbackPercentage: totalFeedbacks
+      ? (lastMonthFeedbacks / totalFeedbacks) * 100
+      : 0,
+    totalOrders,
+    lastMonthOrderPercentage: totalOrders
+      ? (lastMonthOrders / totalOrders) * 100
+      : 0,
+  };
 };
 
 export const AnalyticsService = {
   getTotalCountWithLastMonthPercentage,
   getLastSavenTotalSales,
+  totalSalePerMonthForAYear,
+  orderStatusOverview,
+  userStatusOverview,
+  getTotalCountWithLastMonthPercentageForUser,
 };
